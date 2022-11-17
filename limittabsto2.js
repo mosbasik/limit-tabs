@@ -179,7 +179,8 @@ function firststart(mt_item) {
 		browser.storage.local.set({ nosound: false });
 
 		browser.storage.local.set({ newest: true });
-		browser.storage.local.set({ lru: false });
+		browser.storage.local.set({ lrucurrent: false });
+		browser.storage.local.set({ lruglobal: false });
 		browser.storage.local.set({ left: false });
 		browser.storage.local.set({ right: false });
 
@@ -308,14 +309,23 @@ function onCloseNewest(result) {
 	if (myResult) {
 		close_newest();
 	} else {
-		var getting = browser.storage.local.get("lru");
-		getting.then(onCloseLru, onError);
+		var getting = browser.storage.local.get("lrucurrent");
+		getting.then(onCloseLruCurrent, onError);
 	}
 }
 
-function onCloseLru(result) {
-	if (result.lru) {
-		close_lru();
+function onCloseLruCurrent(result) {
+	if (result.lrucurrent) {
+		close_lru("current");
+	} else {
+		var getting = browser.storage.local.get("lruglobal");
+		getting.then(onCloseLruGlobal, onError);
+	}
+}
+
+function onCloseLruGlobal(result) {
+	if (result.lruglobal) {
+		close_lru("global");
 	} else {
 		var getting = browser.storage.local.get("right");
 		getting.then(onCloseRight, onError);
@@ -376,40 +386,37 @@ async function close_newest () {
 	}
 }
 
-async function close_lru () {
-	var totalTabs = 0;
-	// First get the number of tabs in other windows
-	if (! currentonly) {
-		let tabArray = await browser.tabs.query({currentWindow: false, pinned: false});
-		totalTabs = tabArray.length;
-	}
+async function close_lru (close_scope) {
 
-	// Now retrieve the number of tabs in the current window
-	let tabArray = await browser.tabs.query({currentWindow: true, pinned: false});
-	totalTabs = totalTabs + tabArray.length;
-	
-	if (totalTabs > TABLIMIT) {
+	// Get all the tabs, but keep the current window's tabs separate from the other windows' tabs
+	const currentTabArray = await browser.tabs.query({ currentWindow: true, pinned: false });
+	const otherTabArray = await browser.tabs.query({ currentWindow: false, pinned: false });
+
+	// Get the tabs that matter for making two decisions: "am I over my tab limit?", and "which tab should I close?"
+	const countableTabs = currentonly 			   ? currentTabArray : currentTabArray.concat(otherTabArray)
+	const closeableTabs = close_scope == 'current' ? currentTabArray : currentTabArray.concat(otherTabArray)
+
+	if (countableTabs.length > TABLIMIT) {
 		// var getting = browser.storage.local.get("nosound");
 		// getting.then(play_sound, onError);
 		play_sound();
 
-
 		// Code to close the least recently used
-		var oldesttime=tabArray[0].lastAccessed, index=0, i;
+		var oldesttime=closeableTabs[0].lastAccessed, index=0, i;
 
-		for (i = 0; i < tabArray.length-1; i++) {
+		for (i = 0; i < closeableTabs.length-1; i++) {
 
-			//console.log ("close_lru. i=" + i + "  lastAccessed=" + tabArray[i].lastAccessed);
+			//console.log ("close_lru. i=" + i + "  lastAccessed=" + closeableTabs[i].lastAccessed);
 
-			if (tabArray[i].lastAccessed < oldesttime) {
+			if (closeableTabs[i].lastAccessed < oldesttime) {
 				index = i;
-				oldesttime = tabArray[i].lastAccessed;
+				oldesttime = closeableTabs[i].lastAccessed;
 
 				// console.log ("close_lru. index changed to =" + i);
 			}
 		}
 
-		await browser.tabs.remove(tabArray[index].id);
+		await browser.tabs.remove(closeableTabs[index].id);
 		close_lru();
 		addonRemoving = true;
 	}
