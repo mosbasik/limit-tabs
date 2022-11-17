@@ -377,18 +377,19 @@ async function close_newest () {
 }
 
 async function close_lru () {
-	var totalTabs = 0;
-	// First get the number of tabs in other windows
-	if (! currentonly) {
-		let tabArray = await browser.tabs.query({currentWindow: false, pinned: false});
-		totalTabs = tabArray.length;
+	let tabArray = [];
+
+	// First append the tabs from other windows (if necessary)
+	if (!currentonly) {
+		let otherTabArray = await browser.tabs.query({ currentWindow: false, pinned: false });
+		tabArray = tabArray.concat(otherTabArray);
 	}
 
-	// Now retrieve the number of tabs in the current window
-	let tabArray = await browser.tabs.query({currentWindow: true, pinned: false});
-	totalTabs = totalTabs + tabArray.length;
-	
-	if (totalTabs > TABLIMIT) {
+	// Now append the tabs from the current window (always)
+	let currentTabArray = await browser.tabs.query({ currentWindow: true, pinned: false });
+	tabArray = tabArray.concat(currentTabArray);
+
+	if (tabArray.length > TABLIMIT) {
 		// var getting = browser.storage.local.get("nosound");
 		// getting.then(play_sound, onError);
 		play_sound();

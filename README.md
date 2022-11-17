@@ -18,3 +18,5 @@ Changes in this fork
 --------------------
 
 - **Bugfix**: The act of loading the add-on's preferences tab was causing it to enter "current window limit" mode, regardless of whether it had been in "current tab" mode or "global mode" before that.
+
+- **Breaking change**: The "Least Recently Used" strategy for removing tabs used to always remove tabs from the current window.  Now, if the add-on is in "global limit" mode, it removes tabs from among all windows.
