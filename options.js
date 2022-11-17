@@ -138,7 +138,7 @@ function restoreOptions() {
 	}
 
 	function setcurrentonly(result) {
-		document.getElementById("currentonly").checked = result.currentonly || true;
+		document.getElementById("currentonly").checked = !!(result.currentonly ?? true);
 	}
 
 	function setresetmax(result) {
