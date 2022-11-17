@@ -1,4 +1,4 @@
-// 1.2.3 04May2018. Original version 
+// 1.2.3 04May2018. Original version
 // 1.2.4 13Aug2018. Changed options.html to make maxtabs a "number"
 // 1.2.5 13Aug2018. Added closenew option
 // 1.3.0 13Aug2018. Removed some redundant code
@@ -21,7 +21,7 @@
 // 1.4.5 24Jun2020. close_newest. Modified to use tab.id instead of tab.lastAccessed
 // 2.0.0 25Jun2020. Modified to allow for toolbar icon that toggles addon status between
 //							active/inactive. See toggle_enable, limitEnabled, manifest.json:browser_action
-//						  Also reintroduced TABLIMIT as a global variable (how was it working before?)	
+//						  Also reintroduced TABLIMIT as a global variable (how was it working before?)
 // 2.0.1 26Jun2020. Added option to disable toggle browser action (Roarke started toggling
 //							within a day
 // 2.0.2 14Jul2020. Added BadgeText to display percent of used tabs. See updateBadgeCount,
@@ -33,7 +33,7 @@
 //							would apply to each FF window independent of others. currentonly (default=
 //							true) when set to false, would apply the limit globally
 // 2.1.1 21Sep2020. Modified Math.round to Math.floor (so that 100% displays only when really at the limit)
-// 2.2.0 23May2021. Added windowId to allow badgecount to update correctly. 
+// 2.2.0 23May2021. Added windowId to allow badgecount to update correctly.
 // 2.2.1 25May2021. Added sound options -- gong, buzzer, doorbell, beep. Changed lt.js, options.js, options.html
 // 2.2.2 27May2021. Modified options.js to play the sound selected
 // 2.2.3 29May2021. doToggle-false. Cycle through all windows, using windowId
@@ -79,7 +79,7 @@ async function doToggle (result) {
       				}
     			});
 
-			
+
 		} else {
 			limitEnabled = true;
 			browser.storage.local.set({ limit_enabled: true });
@@ -103,7 +103,7 @@ async function doToggle (result) {
 			if (result.resetmax) {
 				TABLIMIT = totalTabs;
 				browser.storage.local.set({ maxtabs: TABLIMIT });
-				
+
 			}
 
 			updateBadgeCount(totalTabs, TABLIMIT);
@@ -117,7 +117,7 @@ function onError(error) {
 }
 
 async function updateBadgeCount(actualCount, limitTabs) {
-			
+
 	let myWindow = await browser.windows.getCurrent();
 	windowId = myWindow.id;
 
@@ -148,7 +148,7 @@ async function updateBadgeCount(actualCount, limitTabs) {
 		browser.browserAction.setBadgeTextColor({color: "black", windowId});
 		browser.browserAction.setBadgeBackgroundColor({color: "lightgray", windowId: windowId});
 	}
-	
+
 }
 
 function onTabsChanged() {
@@ -242,7 +242,7 @@ function setCurrentOnly(result) {
 		browser.storage.local.set({ currentonly: true});
 		currentonly = true;
 	}
- 	
+
 	// console.log ("setCurrentOnly. currentonly = " + currentonly);
 	// if (currentonly) {
 		// set window Id
@@ -278,7 +278,7 @@ async function doStuff() {
 	let tabArray = await browser.tabs.query({currentWindow: true, pinned: false});
 	totalTabs = totalTabs + tabArray.length;
 	// console.log ("doStuff. totalTabs (all) = " + totalTabs);
-	
+
 	if (totalTabs > TABLIMIT) {
 		var getting = browser.storage.local.get("newest" || true);
 		getting.then(onCloseNewest, onError);
@@ -293,7 +293,7 @@ async function doStuff() {
 				totalTabs = totalTabs-1
 			}
 			addonRemoving = false;
-		} 
+		}
 		updateBadgeCount(totalTabs, TABLIMIT);
 	}
 }
@@ -307,7 +307,7 @@ function onCloseNewest(result) {
 
 	if (myResult) {
 		close_newest();
-	} else { 
+	} else {
 		var getting = browser.storage.local.get("lru");
 		getting.then(onCloseLru, onError);
 	}
@@ -316,7 +316,7 @@ function onCloseNewest(result) {
 function onCloseLru(result) {
 	if (result.lru) {
 		close_lru();
-	} else { 
+	} else {
 		var getting = browser.storage.local.get("right");
 		getting.then(onCloseRight, onError);
 	}
@@ -325,7 +325,7 @@ function onCloseLru(result) {
 function onCloseRight(result) {
 	if (result.right) {
 		right_close();
-	} else { 
+	} else {
 		left_close();
 	}
 
@@ -346,7 +346,7 @@ async function close_newest () {
 	totalTabs = totalTabs + tabArray.length;
 
 	// console.log ("close_newest. totalTabs (all) =" + totalTabs);
-	
+
 	if (totalTabs > TABLIMIT) {
 		// var getting = browser.storage.local.get("nosound");
 		// getting.then(play_sound, onError);
@@ -356,9 +356,9 @@ async function close_newest () {
 		var index=0, i;
 		var newestid=tabArray[0].id;
 
-		for (i = 0; i < tabArray.length; i++) { 
- 			// console.log ("close_newest. i=" + i 
- 			//  	+ "  lastAccessed=" + tabArray[i].lastAccessed 
+		for (i = 0; i < tabArray.length; i++) {
+ 			// console.log ("close_newest. i=" + i
+ 			//  	+ "  lastAccessed=" + tabArray[i].lastAccessed
  			//  	+ "  Id =" + tabArray[i].id);
 
 			if (tabArray[i].id > newestid) {
@@ -373,7 +373,7 @@ async function close_newest () {
 		close_newest();
 		addonRemoving = true;
 		// console.log ("close_newest. Inside for. tabArray.length =" + tabArray.length);
-	} 
+	}
 }
 
 async function close_lru () {
@@ -397,14 +397,14 @@ async function close_lru () {
 		// Code to close the least recently used
 		var oldesttime=tabArray[0].lastAccessed, index=0, i;
 
-		for (i = 0; i < tabArray.length-1; i++) { 
+		for (i = 0; i < tabArray.length-1; i++) {
 
 			//console.log ("close_lru. i=" + i + "  lastAccessed=" + tabArray[i].lastAccessed);
 
 			if (tabArray[i].lastAccessed < oldesttime) {
 				index = i;
 				oldesttime = tabArray[i].lastAccessed;
-				
+
 				// console.log ("close_lru. index changed to =" + i);
 			}
 		}
@@ -412,7 +412,7 @@ async function close_lru () {
 		await browser.tabs.remove(tabArray[index].id);
 		close_lru();
 		addonRemoving = true;
-	} 
+	}
 }
 
 async function right_close () {
@@ -426,7 +426,7 @@ async function right_close () {
 	// Now retrieve the number of tabs in the current window
 	let tabArray = await browser.tabs.query({currentWindow: true, pinned: false});
 	totalTabs = totalTabs + tabArray.length;
-	
+
 	if (totalTabs > TABLIMIT) {
 		// var getting = browser.storage.local.get("nosound");
 		// getting.then(play_sound, onError);
@@ -435,7 +435,7 @@ async function right_close () {
 		await browser.tabs.remove(tabArray[tabArray.length-1].id);
 		right_close();
 		addonRemoving = true;
-	} 
+	}
 }
 
 async function left_close () {
@@ -449,7 +449,7 @@ async function left_close () {
 	// Now retrieve the number of tabs in the current window
 	let tabArray = await browser.tabs.query({currentWindow: true, pinned: false});
 	totalTabs = totalTabs + tabArray.length;
-	
+
 	if (totalTabs > TABLIMIT) {
 		// var getting = browser.storage.local.get("nosound");
 		// getting.then(play_sound, onError);
@@ -458,12 +458,12 @@ async function left_close () {
 		await browser.tabs.remove(tabArray[0].id);
 		left_close();
 		addonRemoving = true;
-	} 
+	}
 }
 
 async function play_sound () {
 	var audiofile = "";
-	
+
 	var arbit = await browser.storage.local.get("nosound");
 	if (arbit.nosound) {
 		// Do nothing
@@ -472,7 +472,7 @@ async function play_sound () {
 		arbit = await browser.storage.local.get("buzzer");
 		if (arbit.buzzer) {
 			audiofile = 'buzzer.ogg';
-		} 
+		}
 		arbit = await browser.storage.local.get("gong");
 		if (arbit.gong) {
 			audiofile = 'gong.ogg';
@@ -480,11 +480,11 @@ async function play_sound () {
 		arbit = await browser.storage.local.get("doorbell");
 		if (arbit.doorbell) {
 			audiofile = 'doorbell.ogg';
-		} 
+		}
 		arbit = await browser.storage.local.get("beep");
 		if (arbit.beep) {
 			audiofile = 'beep.ogg';
-		} 
+		}
 
 		if ((Date.now() - SOUND_LAST_PLAYED) > 2000) {
 			var audio = new Audio(audiofile);
@@ -493,7 +493,7 @@ async function play_sound () {
 		}
 	}
 	// console.log("audiofile = " + audiofile);
-	
+
 }
 
 browser.browserAction.setTitle({title: "Toggle Limit Tabs"});

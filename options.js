@@ -83,7 +83,7 @@ function saveSound() {
 
 async function playsound() {
 	var audiofile = "";
-	
+
 	var arbit = await browser.storage.local.get("nosound");
 	if (arbit.nosound) {
 		// Do nothing
@@ -92,7 +92,7 @@ async function playsound() {
 		arbit = await browser.storage.local.get("buzzer");
 		if (arbit.buzzer) {
 			audiofile = 'buzzer.ogg';
-		} 
+		}
 		arbit = await browser.storage.local.get("gong");
 		if (arbit.gong) {
 			audiofile = 'gong.ogg';
@@ -100,11 +100,11 @@ async function playsound() {
 		arbit = await browser.storage.local.get("doorbell");
 		if (arbit.doorbell) {
 			audiofile = 'doorbell.ogg';
-		} 
+		}
 		arbit = await browser.storage.local.get("beep");
 		if (arbit.beep) {
 			audiofile = 'beep.ogg';
-		} 
+		}
 
 		if ((Date.now() - SOUND_LAST_PLAYED) > 1000) {
 			var audio = new Audio(audiofile);
