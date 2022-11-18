@@ -123,7 +123,8 @@ function saveShowTabs() {
 }
 
 function saveWhichTab() {
-	browser.storage.local.set({ lru: document.getElementById("lru").checked });
+	browser.storage.local.set({ lrucurrent: document.getElementById("lrucurrent").checked });
+	browser.storage.local.set({ lruglobal: document.getElementById("lruglobal").checked });
 	browser.storage.local.set({ newest: document.getElementById("newest").checked });
 	browser.storage.local.set({ left: document.getElementById("left").checked });
 	browser.storage.local.set({ right: document.getElementById("right").checked });
@@ -149,8 +150,12 @@ function restoreOptions() {
 		document.getElementById("newest").checked = result.newest || true;
 	}
 
-	function setlru(result) {
-		document.getElementById("lru").checked = result.lru;
+	function setlrucurrent(result) {
+		document.getElementById("lrucurrent").checked = result.lrucurrent;
+	}
+
+	function setlruglobal(result) {
+		document.getElementById("lruglobal").checked = result.lruglobal;
 	}
 
 	function setleft(result) {
@@ -205,8 +210,11 @@ function restoreOptions() {
 	newest_getting = browser.storage.local.get("newest");
 	newest_getting.then(setnewest, onError);
 
-	lru_getting = browser.storage.local.get("lru");
-	lru_getting.then(setlru, onError);
+	lrucurrent_getting = browser.storage.local.get("lrucurrent");
+	lrucurrent_getting.then(setlrucurrent, onError);
+
+	lruglobal_getting = browser.storage.local.get("lruglobal");
+	lruglobal_getting.then(setlruglobal, onError);
 
 	left_getting = browser.storage.local.get("left");
 	left_getting.then(setleft, onError);
@@ -249,7 +257,8 @@ document.getElementById("nosound").addEventListener("change", saveSound);
 document.getElementById("notoggle").addEventListener("change", saveToggle);
 document.getElementById("showtabs").addEventListener("change", saveShowTabs);
 document.getElementById("maxtabs").addEventListener("change", saveMaxTabs);
-document.getElementById("lru").addEventListener("change", saveWhichTab);
+document.getElementById("lrucurrent").addEventListener("change", saveWhichTab);
+document.getElementById("lruglobal").addEventListener("change", saveWhichTab);
 document.getElementById("newest").addEventListener("change", saveWhichTab);
 document.getElementById("left").addEventListener("change", saveWhichTab);
 document.getElementById("right").addEventListener("change", saveWhichTab);

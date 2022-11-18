@@ -18,3 +18,5 @@ Changes in this fork
 --------------------
 
 - **Bugfix**: The act of loading the add-on's preferences tab was causing it to enter "current window limit" mode, regardless of whether it had been in "current tab" mode or "global mode" before that.
+
+- **Feature**: Renamed upstream's "Least Recently Used" strategy to "Least Recently Used (Current Window) and added a new strategy "Least Recently Used (All Windows)"
