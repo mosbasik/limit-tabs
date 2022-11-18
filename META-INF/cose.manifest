@@ -1,0 +1,52 @@
+Manifest-Version: 1.0
+
+Name: beep.ogg
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: +KVMR6BpQBkmfEtCwtxC1AgW4CA=
+SHA256-Digest: fs1O0ydnjYpgGc45GzR0W62kabRz2NZAJXI72tBF9/U=
+
+Name: buzzer.ogg
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: Zl6mSZ4il1lTdnYU4Rbk1HQgx9g=
+SHA256-Digest: arAxp0Pk9yBJlyQkMFPVMFhjz5MrPHK6sTAvwf3D1gY=
+
+Name: doorbell.ogg
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: zyajproRNk7pedBipH59jQxsEUU=
+SHA256-Digest: PLkErly8oai1GTt1Hq4sbFx6ePxOoJuBl3MvvIpL9yg=
+
+Name: gong.ogg
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: VhbY52b2OOu5ILGuppZvkLDWGYQ=
+SHA256-Digest: ZkE4d4twhvn+1SpduneDzc6/CaecwkcUoqhSaFrTrOU=
+
+Name: limittabsto2.js
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: XYt97+RYzQ3OTr+j1lnoZ21Vy7M=
+SHA256-Digest: 6mfc6aojDHsIYjCqwO5JuEgtXuBEFtvta10URpHDiDw=
+
+Name: manifest.json
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: MM0HaJItyLmaAZabaNVWEC56LZo=
+SHA256-Digest: zK2LyBU/WM3l6qkzOjz26/yNGaxt1895jXQbp9WWPz0=
+
+Name: options.html
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: sM10NU3V0Y4a5fnUX/4sPkCqWM0=
+SHA256-Digest: Ohn70JuVKBZDRzBRVnAmu5UCbsbKVf6ga2M51eDtSOA=
+
+Name: options.js
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: C+r0TbefToMPkEqK+4Ux+Jexd7Y=
+SHA256-Digest: KtKjk7DMBZVKGY/DKtRJZXV0XnpGaoV6QhNIcMBJ1po=
+
+Name: icons/enabled.png
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: jODKvtXsjos5NoxzJabpPyskZeQ=
+SHA256-Digest: GbqJ2Lu2XTXn/OKyQmZfNFtfeyy0F/4MqQZGOoHA3+g=
+
+Name: icons/disabled.png
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: URP+4dGcJLYC+OqjIpYmjsZblnA=
+SHA256-Digest: d2YXD3M1hZOsPK3reGQWdlLwOt6ySoh2PY8eX66Qxf0=
+
