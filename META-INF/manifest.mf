@@ -59,4 +59,3 @@ Name: META-INF/cose.sig
 Digest-Algorithms: SHA1 SHA256
 SHA1-Digest: fzKigRDIJvmMU417DkDUQ4gCRh4=
 SHA256-Digest: r8wjvfvSWOCkh544MXnje4uZEDQ2SDW4So5/7qs/Hz0=
-
